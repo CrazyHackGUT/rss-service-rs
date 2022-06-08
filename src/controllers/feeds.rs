@@ -1,12 +1,11 @@
-use std::io::Read;
 use super::super::models::feed::{Feed, NewFeed};
 use actix_web::{get, post, web, HttpResponse, Responder};
-use chrono::{NaiveDate, NaiveDateTime};
+use chrono::NaiveDateTime;
 use diesel::prelude::*;
 use reqwest::Url;
 use rss::Channel;
 use serde_json::json;
-use crate::{DbPool, pool};
+use crate::DbPool;
 use crate::models::feed::FeedDto;
 
 use crate::http_client;
