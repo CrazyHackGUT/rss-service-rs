@@ -1,14 +1,32 @@
-use chrono::{DateTime, Utc};
+use chrono::{NaiveDateTime};
 use serde::{Deserialize, Serialize};
+use diesel::Queryable;
+use crate::schema::*;
 
 #[derive(Deserialize, Serialize)]
+pub(crate) struct FeedDto {
+    pub url: String,
+    pub home_page: Option<String>,
+    pub title: Option<String>
+}
+
+#[derive(Deserialize, Serialize, Queryable)]
 pub(crate) struct Feed {
-    id: Option<u64>,
-    url: String,
+    pub id: i64,
+    pub url: String,
 
     // HomePage and title can be dynamically set via Feed URL.
-    home_page: Option<String>,
-    title: Option<String>,
+    pub home_page: String,
+    pub title: String,
 
-    updated_at: Option<DateTime<Utc>>,
+    pub updated_at: NaiveDateTime
+}
+
+#[derive(Insertable)]
+#[table_name="feeds"]
+pub(crate) struct NewFeed {
+    pub url: String,
+    pub home_page: String,
+    pub title: String,
+    pub updated_at: NaiveDateTime
 }
