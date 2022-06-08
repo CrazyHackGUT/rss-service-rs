@@ -1,5 +1,5 @@
-use actix_web::{get, HttpResponse, post, Responder, web};
 use super::super::models::feed::Feed;
+use actix_web::{get, post, web, HttpResponse, Responder};
 
 #[get("/v1/feed/")]
 pub(super) async fn list() -> impl Responder {
