@@ -5,7 +5,7 @@ use diesel::prelude::*;
 use reqwest::Url;
 use rss::Channel;
 use serde_json::json;
-use crate::DbPool;
+use crate::db::DbPool;
 use crate::models::feed::FeedDto;
 
 use crate::http_client;

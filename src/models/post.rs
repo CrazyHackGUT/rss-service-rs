@@ -1,3 +1,4 @@
+use std::fmt::{Display, Formatter};
 use chrono::{NaiveDateTime};
 use serde::{Deserialize, Serialize};
 use diesel::Queryable;
@@ -15,6 +16,12 @@ pub(crate) struct Post {
 
     pub posted_at: NaiveDateTime,
     pub received_at: NaiveDateTime
+}
+
+impl Display for Post {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        f.write_str(format!("{} ({})", self.title, self.url).as_str())
+    }
 }
 
 #[derive(Insertable)]
