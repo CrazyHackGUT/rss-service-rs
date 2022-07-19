@@ -1,10 +1,11 @@
 use std::env::var;
 use diesel::{Connection, PgConnection};
 use diesel::r2d2::ConnectionManager;
-use r2d2::Pool;
+use r2d2::{Pool, PooledConnection};
 
 pub(crate) type DbConnection = PgConnection;
 pub(crate) type DbConnectionManager = ConnectionManager<DbConnection>;
+pub(crate) type DbPooledConnection = PooledConnection<DbConnectionManager>;
 pub(crate) type DbPool = Pool<DbConnectionManager>;
 
 pub(crate) fn connection() -> DbConnection {

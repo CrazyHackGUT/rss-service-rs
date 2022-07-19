@@ -12,13 +12,15 @@ mod schema;
 mod http;
 mod db;
 mod rss;
+mod handlers;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
     pretty_env_logger::init();
 
-    rss::start();
+    let vector = handlers::start();
+    rss::start(vector);
     http::http_server()
         .await
 }

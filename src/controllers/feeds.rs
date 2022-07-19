@@ -11,14 +11,12 @@ use crate::models::feed::FeedDto;
 use crate::http_client;
 
 use crate::schema::feeds::dsl::*;
+use super::db_from_pool;
 
 #[get("/v1/feed/")]
 pub(super) async fn list(pool: web::Data<DbPool>) -> impl Responder {
-    match pool.get() {
-        Err(_) => HttpResponse::InternalServerError().json(json!({
-            "success": false,
-            "code": "database_unavailable"
-        })),
+    match db_from_pool(pool) {
+        Err(e) => e,
         Ok(db) => HttpResponse::Ok()
             .json(feeds.load::<Feed>(&db).unwrap())
     }
@@ -26,11 +24,8 @@ pub(super) async fn list(pool: web::Data<DbPool>) -> impl Responder {
 
 #[get("/v1/feed/{feed_id}")]
 pub(super) async fn get(feed_id: web::Path<i64>, pool: web::Data<DbPool>) -> impl Responder {
-    match pool.get() {
-        Err(_) => HttpResponse::InternalServerError().json(json!({
-            "success": false,
-            "code": "database_unavailable"
-        })),
+    match db_from_pool(pool) {
+        Err(e) => e,
         Ok(db) => HttpResponse::Ok()
             .json(feeds.find(feed_id.into_inner()).load::<Feed>(&db).unwrap().first())
     }
@@ -86,11 +81,8 @@ pub(super) async fn new(feed: web::Json<FeedDto>, pool: web::Data<DbPool>) -> im
         }
     }
 
-    match pool.get() {
-        Err(_) => HttpResponse::InternalServerError().json(json!({
-            "success": false,
-            "code": "database_unavailable"
-        })),
+    match db_from_pool(pool) {
+        Err(e) => e,
         Ok(db) => {
             let feed = NewFeed {
                 url: feed_url.to_string(),

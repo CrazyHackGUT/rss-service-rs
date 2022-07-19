@@ -3,8 +3,6 @@ name = "rss-service"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 actix = "0.13.0"
 actix-web = "4.0.1"
@@ -19,6 +17,7 @@ reqwest = { version = "0.11.10", features = ["blocking"] }
 log = "0.4.17"
 pretty_env_logger = "0.4.0"
 thiserror = "1.0.31"
+tokio = "1.19.2"
 
 [profile.release]
 strip = true
