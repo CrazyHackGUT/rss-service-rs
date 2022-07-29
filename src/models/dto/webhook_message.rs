@@ -26,14 +26,6 @@ pub(crate) struct PostStruct {
 }
 
 impl PostStruct {
-    pub(crate) fn from_post(post: &Post) -> Self {
-        PostStruct {
-            title: post.title.to_owned(),
-            url: post.url.to_owned(),
-            posted_at: post.posted_at
-        }
-    }
-
     pub(crate) fn from_item(item: &Item) -> Self {
         PostStruct {
             title: item.title.as_ref().unwrap().to_owned(),
@@ -55,13 +47,6 @@ impl FeedStruct {
 }
 
 impl WebHookMessage {
-    pub(crate) fn from_post(post: &Post, feed: &Feed) -> Self {
-        WebHookMessage {
-            post: PostStruct::from_post(post),
-            feed: FeedStruct::from(feed)
-        }
-    }
-
     pub(crate) fn from_item(item: &Item, feed: &Feed) -> Self {
         WebHookMessage {
             post: PostStruct::from_item(item),
