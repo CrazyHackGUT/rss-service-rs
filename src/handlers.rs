@@ -28,7 +28,7 @@ pub(crate) fn start() -> SharedVector<Message> {
             for message in cloned_vector {
                 let endpoint = message.endpoint.to_owned();
 
-                match client.post(endpoint.to_owned()).body(message.body).build() {
+                match client.post(endpoint.to_owned()).body(message.body).send() {
                     Ok(_) => trace!("Successfully delivered message to {}", endpoint),
                     Err(e) => error!("Error when delivering message to {}: {:?}", endpoint, e)
                 }

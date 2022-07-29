@@ -2,7 +2,6 @@ use chrono::{DateTime, NaiveDateTime};
 use rss::Item;
 use serde::{Deserialize, Serialize};
 use crate::models::feed::Feed;
-use crate::models::post::Post;
 
 #[derive(Serialize, Deserialize)]
 pub(crate) struct WebHookMessage {
