@@ -11,7 +11,7 @@ pub(crate) struct WebHookSubscription {
 
 #[derive(Insertable)]
 #[table_name="webhooks_subscriptions"]
-pub(crate) struct NewWebHook {
+pub(crate) struct NewWebHookSubscription {
     pub webhook_id: i64,
     pub feed_id: i64,
 }
