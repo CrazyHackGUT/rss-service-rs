@@ -1,0 +1,21 @@
+name: Build Docker image
+
+on:
+  push:
+    branches: [ master ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: docker
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          platforms: linux/amd64
+          push: ${{ github.ref == 'refs/heads/master' }}
+          tags: crazyhackgut/rss-service-rs:latest
