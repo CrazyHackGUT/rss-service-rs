@@ -61,12 +61,9 @@ fn subscriber_by_url(db: &DbPooledConnection, webhook_url: String) -> WebHook {
     match webhooks.filter(url.eq(webhook_url.to_owned())).first::<WebHook>(db) {
         Ok(webhook) => webhook,
         Err(_) => {
-            let webhook = NewWebHook {
-                url: webhook_url
-            };
-
-            diesel::insert_into(webhooks).values(webhook)
-                .get_result::<WebHook>(db).unwrap()
+            diesel::insert_into(webhooks).values(NewWebHook {
+                    url: webhook_url
+                }).get_result::<WebHook>(db).unwrap()
         }
     }
 }

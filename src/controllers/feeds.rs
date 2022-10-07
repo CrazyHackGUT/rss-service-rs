@@ -26,8 +26,19 @@ pub(super) async fn list(pool: web::Data<DbPool>) -> impl Responder {
 pub(super) async fn get(feed_id: web::Path<i64>, pool: web::Data<DbPool>) -> impl Responder {
     match db_from_pool(pool) {
         Err(e) => e,
-        Ok(db) => HttpResponse::Ok()
-            .json(feeds.find(feed_id.into_inner()).load::<Feed>(&db).unwrap().first())
+        Ok(db) => {
+            let find_result = feeds.find(feed_id.into_inner()).load::<Feed>(&db);
+            find_result.map(|feeds_vec| {
+                feeds_vec.first().map(|feed| HttpResponse::Ok().json(&feed))
+                    .unwrap_or_else(|| HttpResponse::NotFound().json(json!({
+                        "success": false,
+                        "code": "not_found"
+                    })))
+            }).unwrap_or_else(|_| HttpResponse::InternalServerError().json(json!({
+                    "success": false,
+                    "code": "database_failure"
+                })))
+        }
     }
 }
 
@@ -91,19 +102,14 @@ pub(super) async fn new(feed: web::Json<FeedDto>, pool: web::Data<DbPool>) -> im
                 updated_at: NaiveDateTime::from_timestamp(0, 0)
             };
 
-            let insert_result = diesel::insert_into(feeds)
+            diesel::insert_into(feeds)
                 .values(feed)
-                .execute(&db);
-
-            if insert_result.is_err() {
-                return HttpResponse::InternalServerError().json(json!({
+                .get_result::<Feed>(&db)
+                .map(|f| HttpResponse::Ok().json(&f))
+                .unwrap_or_else(|_| HttpResponse::InternalServerError().json(json!({
                     "success": false,
                     "code": "database_failure"
-                }));
-            }
-
-            HttpResponse::Ok().json(feeds.filter(url.eq(feed_url.as_str()))
-                .load::<Feed>(&db).unwrap())
+                })))
         }
     }
 }
