@@ -1,6 +1,6 @@
 use std::thread;
 use std::time::Duration;
-use chrono::{DateTime, Utc};
+use chrono::Utc;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use log::{debug, error, trace};
 use rss::Item;
@@ -90,10 +90,7 @@ fn handle_non_existing_post(item: &Item, feed: &Feed, connection: &DbConnection,
     let feed_id = feed.id;
     let title = item.title.as_ref().unwrap().to_string();
     let url = item.link.as_ref().unwrap().to_string();
-    let posted_at = match item.pub_date.as_ref() {
-        Some(date) => DateTime::parse_from_rfc2822(date.as_str()).unwrap().naive_utc(),
-        None => Utc::now().naive_utc()
-    };
+    let posted_at = crate::util::safe_date_from_post(item);
     let received_at = Utc::now().naive_utc();
     debug!("Inserting a new post (feed {}, item link {}) into database", feed_id, url);
 

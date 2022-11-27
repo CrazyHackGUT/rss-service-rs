@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 actix = "0.13.0"
-actix-web = "4.0.1"
+actix-web = { version = "4.0.1", features = ["rustls", "macros"], default-features = false }
 serde = { version="1.0.137", features=["derive"] }
 serde_json = "1.0.81"
 chrono = { version = "0.4.19", features=["serde"] }
@@ -13,7 +13,7 @@ rss = "2.0.1"
 dotenv = "0.15.0"
 r2d2 = "0.8.9"
 diesel = { version = "1.4.8", features = ["postgres", "r2d2", "chrono"] }
-reqwest = { version = "0.11.10", features = ["blocking"] }
+reqwest = { version = "0.11.10", features = ["blocking", "rustls-tls"], default-features = false }
 log = "0.4.17"
 pretty_env_logger = "0.4.0"
 thiserror = "1.0.31"

@@ -13,6 +13,7 @@ mod http;
 mod db;
 mod rss;
 mod handlers;
+mod util;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

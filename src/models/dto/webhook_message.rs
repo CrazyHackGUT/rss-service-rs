@@ -29,8 +29,7 @@ impl PostStruct {
         PostStruct {
             title: item.title.as_ref().unwrap().to_owned(),
             url: item.link.as_ref().unwrap().to_owned(),
-            posted_at: DateTime::parse_from_rfc2822(item.pub_date.as_ref().unwrap().as_str())
-                .unwrap().naive_utc()
+            posted_at: crate::util::safe_date_from_post(item)
         }
     }
 }
