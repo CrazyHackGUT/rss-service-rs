@@ -1,4 +1,4 @@
-use chrono::{DateTime, NaiveDateTime};
+use chrono::NaiveDateTime;
 use rss::Item;
 use serde::{Deserialize, Serialize};
 use crate::models::feed::Feed;
