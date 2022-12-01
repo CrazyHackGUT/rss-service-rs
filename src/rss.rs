@@ -68,6 +68,11 @@ fn handle_non_existing_posts(items: Vec<Item>, feed: &Feed, connection: &DbConne
     debug!("Handling non-existing posts for {}...", feed);
     for item in items {
         let item_ref = &item;
+        if item_ref.link.is_none()
+        {
+            debug!("RSS item doesn't have link. Something wrong. Skipping...");
+            continue;
+        }
 
         // TODO: move this shit to repository method?
         debug!("Searching post {} on forum...", item_ref.title.as_ref().unwrap_or(&"Unknown title".to_string()));
